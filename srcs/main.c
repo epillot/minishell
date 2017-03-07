@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 13:41:02 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/03 18:59:12 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/07 18:04:32 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static char	**get_env(char **envi)
 	return (env);
 }
 
-static char	**get_cmd_path(char **env)
+static char	**get_bin_path(char **env)
 {
 	char **path;
 
@@ -42,75 +42,27 @@ static char	**get_cmd_path(char **env)
 	return (path);
 }
 
-static void	exec_cmd(char **path, char *line, char **env)
-{
-	char	**cmd;
-	char	*cmd_path;
-	int		i;
-	int		acc;
-
-	if (!(cmd = ft_strsplit(line, ' ')))
-		exit(EXIT_FAILURE);
-	i = -1;
-	while (path[++i])
-	{
-		if (ft_sprintf(&cmd_path, "%s/%s", path[i], *cmd) == -1)
-			exit(EXIT_FAILURE);
-		if ((acc = check_access(cmd_path, *cmd)) == 1)
-		{
-			ft_printf("access ok for %s\n", cmd_path);
-			if (execve(cmd_path, cmd, env) == -1)
-			{
-				ft_printf("minishell: command not found: %s\n", *cmd);
-				free(cmd_path);
-				break ;
-			}
-		}
-		free(cmd_path);
-		if (!acc)
-			break ;
-	}
-	if (!path[i])
-		ft_printf("minishell: command not found: %s\n", *cmd);
-	i = 0;
-	exit(EXIT_FAILURE);
-/*	while (cmd[i])
-		free(cmd[i++]);
-	free(cmd);*/
-/*	while (path[i])
-		free(path[i++]);
-	free(path);*/
-
-}
-
 int			main(int ac, char **av, char **envi)
 {
 	char	*line;
 	char	**env;
 	char	**path;
-	pid_t	pid;
-	int		i;
+	int		ret;
 
 	(void)ac;
 	(void)av;
-	i = 0;
 	env = get_env(envi);
-	path = get_cmd_path(env);
+	path = get_bin_path(env);
 	while (42)
 	{
 		ft_putstr("$> ");
-		get_next_line(0, &line);
+		ret = get_next_line(0, &line);
+		if (ret != 1)
+			break ;
 		if (line && *line)
-		{
-			pid = fork();
-			if (pid == 0)
-			{
-				exec_cmd(path, line, env);
-			//	kill(getpid(), SIGTERM);
-			}
-			else
-				wait(NULL);
+			process_cmd(path, line, env);
+		if (line)
 			free(line);
-		}
 	}
+	return (ret == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 }

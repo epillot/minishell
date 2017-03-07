@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/18 17:23:35 by epillot           #+#    #+#             */
-/*   Updated: 2017/01/25 18:38:33 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/07 13:34:46 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 # define GET_NEXT_LINE_H
 
-# define BUFF_SIZE 2
+# define BUFF_SIZE 16
 
 typedef struct	s_buffer
 {

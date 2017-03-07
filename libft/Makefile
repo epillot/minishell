@@ -6,7 +6,7 @@
 #    By: epillot <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 15:38:05 by epillot           #+#    #+#              #
-#    Updated: 2017/02/08 19:57:28 by epillot          ###   ########.fr        #
+#    Updated: 2017/03/07 19:04:22 by epillot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,6 +46,7 @@ SRC_STR_NAME = 	ft_atoi.c\
 				ft_strsplit_lst.c\
 				ft_strtrim.c\
 				ft_strsplit.c\
+				ft_strtab_free.c\
 
 SRC_FTPF_NAME = c_convert.c\
 				d_convert.c\

@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 18:04:37 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/03 18:59:14 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/07 18:25:05 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		check_access(char *path, char *cmd)
 			return (1);
 		else
 		{
-			ft_printf_fd(2, "minishell: permission denied: %s\n", cmd);
+			ft_printf_fd(2, "minishell: Permission denied: %s\n", cmd);
 			return (0);
 		}
 	}
