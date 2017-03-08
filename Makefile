@@ -6,7 +6,7 @@
 #    By: epillot <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/04 16:40:08 by epillot           #+#    #+#              #
-#    Updated: 2017/03/07 18:26:07 by epillot          ###   ########.fr        #
+#    Updated: 2017/03/08 18:36:51 by epillot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,8 @@ FLAG = -Wall -Wextra -Werror
 SRC_NAME = main.c\
 		   check_access.c\
 		   process_cmd.c\
+		   check_error_path.c\
+		   minishell_error.c\
 
 SRC_PATH = srcs/
 

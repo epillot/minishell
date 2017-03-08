@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 13:41:02 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/07 18:04:32 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/08 18:36:42 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,13 @@ static char	**get_env(char **envi)
 	i = 0;
 	while (envi[i])
 		i++;
-	env = (char**)malloc(sizeof(char*) * (i + 1));
+	if (!(env = (char**)malloc(sizeof(char*) * (i + 1))))
+		minishell_error(MALLOC, 0, NULL, NULL);
 	i = 0;
 	while (envi[i])
 	{
-		env[i] = ft_strdup(envi[i]);
+		if (!(env[i] = ft_strdup(envi[i])))
+			minishell_error(MALLOC, 0, NULL, NULL);
 		i++;
 	}
 	env[i] = NULL;
@@ -35,10 +37,11 @@ static char	**get_bin_path(char **env)
 {
 	char **path;
 
-	while (*env && ft_strncmp(*env, "PATH", 4) != 0)
+	while (*env && ft_strncmp(*env, "PATH=", 5) != 0)
 		env++;
 	*env += 5;
-	path = ft_strsplit(*env, ':');
+	if (!(path = ft_strsplit(*env, ':')))
+		minishell_error(MALLOC, 0, NULL, NULL);
 	return (path);
 }
 
