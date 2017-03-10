@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 13:41:02 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/08 18:36:42 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/10 18:14:56 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ static char	**get_bin_path(char **env)
 
 	while (*env && ft_strncmp(*env, "PATH=", 5) != 0)
 		env++;
-	*env += 5;
-	if (!(path = ft_strsplit(*env, ':')))
+	if (!(path = ft_strsplit(*env + 5, ':')))
 		minishell_error(MALLOC, 0, NULL, NULL);
 	return (path);
 }
@@ -54,6 +53,11 @@ int			main(int ac, char **av, char **envi)
 
 	(void)ac;
 	(void)av;
+	if (!envi || !*envi)
+	{
+		ft_putendl("env nul");
+		return (0);
+	}
 	env = get_env(envi);
 	path = get_bin_path(env);
 	while (42)
@@ -63,7 +67,7 @@ int			main(int ac, char **av, char **envi)
 		if (ret != 1)
 			break ;
 		if (line && *line)
-			process_cmd(path, line, env);
+			process_cmd(path, line, &env);
 		if (line)
 			free(line);
 	}

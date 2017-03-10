@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/08 18:19:20 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/08 18:44:08 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/10 16:48:49 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static void	print_error(int errnum)
 {
 	if (errnum == MY_ENOENT)
 		ft_putendl_fd("No such file or directory", 2);
+	else if (errnum == CMDNOTFOUND)
+		ft_putendl_fd("command not found", 2);
 	else if (errnum == MY_EISDIR)
 		ft_putendl_fd("is a directory", 2);
 	else if (errnum == MY_EACCESS)
@@ -24,6 +26,8 @@ static void	print_error(int errnum)
 		ft_putendl_fd("File name too long", 2);
 	else if (errnum == MY_ENOTDIR)
 		ft_putendl_fd("Not a directory", 2);
+	else if (errnum == ENVNOTSET)
+		ft_putendl_fd("not set", 2);
 	else
 	{
 		ft_putendl_fd("Malloc error", 2);

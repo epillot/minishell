@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/08 13:54:31 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/08 19:17:58 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/10 16:36:18 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	check_path_access(char *sub_path, char *path,
 	return (0);
 }
 
-void		check_error_path(char *path, int builtin, char *builtname)
+int			check_error_path(char *path, int builtin, char *builtname)
 {
 	char	buf[PATH_MAX];
 	int		i;
@@ -57,21 +57,20 @@ void		check_error_path(char *path, int builtin, char *builtname)
 
 	tmp_path = path;
 	if (!(check_path_length(path, builtin, builtname)))
-		return ;
+		return (0);
 	ft_bzero(buf, PATH_MAX);
 	i = 0;
-	if (*tmp_path == '/')
-		buf[i++] = *tmp_path++;
 	while (*tmp_path)
 	{
 		j = 0;
 		while (*tmp_path && *tmp_path != '/' && ++j <= NAME_MAX)
 			buf[i++] = *tmp_path++;
-		if (!(check_name_length(j, path, builtin, builtname)))
-			return ;
-		if (!(check_path_access(buf, path, builtin, builtname)))
-			return ;
 		if (*tmp_path == '/')
 			buf[i++] = *tmp_path++;
+		if (!(check_name_length(j, path, builtin, builtname)))
+			return (0);
+		if (!(check_path_access(buf, path, builtin, builtname)))
+			return (0);
 	}
+	return (1);
 }

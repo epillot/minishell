@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 13:42:11 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/08 18:37:29 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/10 16:45:56 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,16 @@ enum
 	MY_EACCESS,
 	MY_ENAMETOOLONG,
 	MY_ENOTDIR,
+	CMDNOTFOUND,
+	ENVNOTSET,
 	MALLOC
 };
 
-int		check_access(char *path, char *cmd);
-void	process_cmd(char **bin_path, char *line, char **env);
-void	check_error_path(char *path, int builtin, char *builtname);
+int		get_cmd_path(char **bin_path, char *cmd, char **cmd_path);
+void	process_cmd(char **bin_path, char *line, char ***env);
+int		check_error_path(char *path, int builtin, char *builtname);
 void	minishell_error(int errnum, int builtin, char *builtname, char *str);
+void	manage_env(char *var, char *newval, char ***env);
+void	ft_cd(char *path, char ***env);
 
 #endif
