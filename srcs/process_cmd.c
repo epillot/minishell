@@ -26,8 +26,22 @@ static int	is_path(char *cmd)
 static int	is_builtin(char *cmd)
 {
 	if (ft_strcmp(cmd, "cd") == 0)
-		return (1);
+		return (CD);
+	if (ft_strcmp(cmd, "setenv") == 0)
+		return (SETENV);
+	if (ft_strcmp(cmd, "unsetenv") == 0)
+		return (UNSETENV);
 	return (0);
+}
+
+static void	exec_builtin(int built, char **cmd, char ***env)
+{
+	if (built == CD)
+		ft_cd(*(cmd + 1), env);
+	else if (built == SETENV)
+		ft_setenv(cmd + 1, env);
+	else if (built == UNSETENV)
+		ft_unsetenv(cmd + 1, *env);
 }
 
 static void	run_cmd(char *cmd_path, char **cmd, char ***env)
@@ -52,6 +66,7 @@ void		process_cmd(char **bin_path, char *line, char ***env)
 	char		**cmd;
 	char		*cmd_path;
 	struct stat	buf;
+	int		built;
 
 	if (!(cmd = ft_strsplit(line, ' ')))
 		minishell_error(MALLOC, 0, NULL, NULL);
@@ -60,8 +75,8 @@ void		process_cmd(char **bin_path, char *line, char ***env)
 		ft_strtab_free(cmd);
 		return ;
 	}
-	if (is_builtin(*cmd))
-		ft_cd(cmd[1], env);
+	if ((built = is_builtin(*cmd)))
+		exec_builtin(built, cmd, env);
 	else if (is_path(*cmd))
 	{
 		if (stat(*cmd, &buf) != -1)

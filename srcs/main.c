@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static char	**get_env(char **envi)
+/*static char	**get_env(char **envi)
 {
 	char	**env;
 	int		i;
@@ -31,7 +31,7 @@ static char	**get_env(char **envi)
 	}
 	env[i] = NULL;
 	return (env);
-}
+}*/
 
 static char	**get_bin_path(char **env)
 {
@@ -53,12 +53,7 @@ int			main(int ac, char **av, char **envi)
 
 	(void)ac;
 	(void)av;
-	if (!envi || !*envi)
-	{
-		ft_putendl("env nul");
-		return (0);
-	}
-	env = get_env(envi);
+	env = minishell_init(envi);
 	path = get_bin_path(env);
 	while (42)
 	{
@@ -71,5 +66,10 @@ int			main(int ac, char **av, char **envi)
 		if (line)
 			free(line);
 	}
-	return (ret == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
+	if (ret == 0)
+	{
+		ft_putendl("exit");
+		return (EXIT_SUCCESS);
+	}
+	return (EXIT_FAILURE);
 }

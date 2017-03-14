@@ -21,6 +21,10 @@ SRC_NAME = main.c\
 		   minishell_error.c\
 		   manage_env.c\
 		   ft_cd.c\
+		ft_getenv.c\
+		minishell_init.c\
+		ft_setenv.c\
+		ft_unsetenv.c\
 
 SRC_PATH = srcs/
 
@@ -30,7 +34,7 @@ OBJ_PATH = obj/
 
 OBJ = $(addprefix $(OBJ_PATH), $(OBJ_NAME))
 
-INC = -I./includes/
+INC = -I./includes/ -I./libft/includes/
 
 all: $(NAME)
 

@@ -12,33 +12,45 @@
 
 #include "minishell.h"
 
-static void	get_new_env(char *name, char *val, char ***env)
+static void	get_new_env(char *var, char *val, char ***env)
 {
 	char	**new_env;
 	int		i;
-	size_t size;
 
 	i = 0;
 	while ((*env)[i])
 		i++;
-	size = sizeof(char*) * (i + 1);
-	if (!(new_env = ft_realloc(*env, size, size + sizeof(char*))))
+	if (!(new_env = (char**)ft_memalloc(sizeof(char*) * (i + 2))))
 		minishell_error(MALLOC, 0, NULL, NULL);
-	if (!(new_env[i] = ft_strjoin(name, val)))
+	i = 0;
+	while ((*env)[i])
+	{
+		if (!(new_env[i] = ft_strdup((*env)[i])))
+			minishell_error(MALLOC, 0, NULL, NULL);
+		i++;
+	}
+	if (!(new_env[i] = ft_strjoin(var, val)))
 		minishell_error(MALLOC, 0, NULL, NULL);
+	ft_strtab_free(*env);
 	*env = new_env;
 }
 
-void		manage_env(char *name, char *newval, char ***env)
+void		manage_env(char *var, char *newval, char ***env)
 {
-	char **target;
+	int		i;
 
-	if ((target = ft_getenv(name, *env)) != NULL)
+	i = 0;
+	if (!*env)
+		return ;
+	while ((*env)[i] && ft_strncmp((*env)[i], var, ft_strlen(var)) != 0)
+		i++;
+	if ((*env)[i])
 	{
-		free(*target);
-		if (!(*target = ft_strjoin(name, newval)))
+		//ft_putendl((*env)[i]); //
+		free((*env)[i]);
+		if (!((*env)[i] = ft_strjoin(var, newval)))
 			minishell_error(MALLOC, 0, NULL, NULL);
 	}
 	else
-		get_new_env(name, newval, env);
+		get_new_env(var, newval, env);
 }
