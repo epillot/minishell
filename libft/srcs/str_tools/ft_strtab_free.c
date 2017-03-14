@@ -18,6 +18,6 @@ void	ft_strtab_free(char **str)
 
 	i = 0;
 	while (str[i])
-		free(str[i++]);
+		ft_strdel(&str[i++]);
 	free(str);
 }

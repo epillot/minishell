@@ -113,5 +113,7 @@ char				*ft_itoa_base(intmax_t n, int base);
 int					ft_max(int a, int b);
 int					nb_size(intmax_t nb);
 void				ft_strtab_free(char **str);
+void *ft_realloc(void *ptr, size_t old, size_t new);
+char **ft_strtab_dup(char **str);
 
 #endif

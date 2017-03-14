@@ -47,6 +47,7 @@ SRC_STR_NAME = 	ft_atoi.c\
 				ft_strtrim.c\
 				ft_strsplit.c\
 				ft_strtab_free.c\
+				ft_strtab_dup.c\
 
 SRC_FTPF_NAME = c_convert.c\
 				d_convert.c\
@@ -95,6 +96,7 @@ SRC_MEM_NAME =	ft_bzero.c\
 				ft_memcpy.c\
 				ft_memset.c\
 				ft_memmove.c\
+				ft_realloc.c\
 
 SRC_INT_NAME =	ft_itoa.c\
 				ft_abs.c\
