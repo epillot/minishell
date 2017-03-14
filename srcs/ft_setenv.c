@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_setenv.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/14 12:27:05 by epillot           #+#    #+#             */
+/*   Updated: 2017/03/14 16:05:22 by epillot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static int is_valid_name(char *name)
+static int	is_valid_name(char *name)
 {
 	while (*name)
 	{
@@ -11,9 +23,9 @@ static int is_valid_name(char *name)
 	return (1);
 }
 
-static int setenv_error(char **arg)
+static int	setenv_error(char **arg)
 {
-	int i;
+	int		i;
 
 	i = 0;
 	while (arg[i])
@@ -29,20 +41,15 @@ static int setenv_error(char **arg)
 		return (0);
 	}
 	return (1);
-	
 }
 
 
-void	ft_setenv(char **arg, char ***env)
+void		ft_setenv(char **arg, char ***env)
 {
-	char *value;
-	char *name;
+	char	*value;
 
 	if (!(setenv_error(arg)))
 		return ;
-	if (!(name = ft_strjoin(*arg, "=")))
-		minishell_error(MALLOC, 0, NULL, NULL);
 	value = *(arg + 1) != NULL ? *(arg + 1) : "";
-	manage_env(name, value, env);
-	free(name);
+	manage_env(*arg, value, env);
 }

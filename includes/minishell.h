@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 13:42:11 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/10 16:45:56 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/14 16:32:18 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ enum
 	NOT,
 	CD,
 	SETENV,
-	UNSETENV
+	UNSETENV,
+	ECHO
 };
 
 enum
@@ -42,15 +43,17 @@ enum
 	MALLOC
 };
 
-char **minishell_init(char **envi);
-int		get_cmd_path(char **bin_path, char *cmd, char **cmd_path);
-void	process_cmd(char **bin_path, char *line, char ***env);
+char	**minishell_init(char **envi);
+char	**parse_line(char const *s);
+int		get_cmd_path(char *cmd, char **env, char **cmd_path);
+void	process_cmd(char **cmd, char ***env);
 int		check_error_path(char *path, int builtin, char *builtname);
 void	minishell_error(int errnum, int builtin, char *builtname, char *str);
 void	manage_env(char *var, char *newval, char ***env);
-char    **ft_getenv(char *name, char **env);
+char	**ft_getenv(char *name, char **env);
 void	ft_cd(char *path, char ***env);
-void    ft_setenv(char **arg, char ***env);
-void    ft_unsetenv(char **arg, char **env);
+void	ft_setenv(char **arg, char ***env);
+void	ft_unsetenv(char **arg, char **env);
+void	ft_echo(char **param, char **env);
 
 #endif

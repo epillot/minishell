@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_unsetenv.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/14 12:25:28 by epillot           #+#    #+#             */
+/*   Updated: 2017/03/14 16:01:19 by epillot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static void env_remove(char **env)
+static void	env_remove(char **env)
 {
-	int i;
+	int		i;
 
 	i = 0;
 	if (*env)
@@ -17,19 +29,15 @@ static void env_remove(char **env)
 	}
 }
 
-void	ft_unsetenv(char **arg, char **env)
+void		ft_unsetenv(char **arg, char **env)
 {
-	char **tg;
-	char *name;
+	char	**tg;
 
 	while (*arg)
 	{
-		if (!(name = ft_strjoin(*arg, "=")))
-			minishell_error(MALLOC, 0, NULL, NULL);
-		tg = ft_getenv(name, env);
+		tg = ft_getenv(*arg, env);
 		if (tg)
 			env_remove(tg);
-		free(name);
 		arg++;
 	}
 }

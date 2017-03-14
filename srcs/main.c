@@ -6,55 +6,59 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 13:41:02 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/10 18:14:56 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/14 15:45:11 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*static char	**get_env(char **envi)
+static void	parse_quote(char **cmd)
 {
-	char	**env;
 	int		i;
+	int		j;
+	int		in;
+	int		n;
+	char	buf[PATH_MAX + 1];
 
-	i = 0;
-	while (envi[i])
-		i++;
-	if (!(env = (char**)malloc(sizeof(char*) * (i + 1))))
-		minishell_error(MALLOC, 0, NULL, NULL);
-	i = 0;
-	while (envi[i])
+	in = 0;
+	n = 0;
+	while (*cmd)
 	{
-		if (!(env[i] = ft_strdup(envi[i])))
-			minishell_error(MALLOC, 0, NULL, NULL);
-		i++;
+		i = 0;
+		j = 0;
+		ft_bzero(buf, PATH_MAX + 1);
+		while ((*cmd)[i])
+		{
+			if ((*cmd)[i] == '"')
+			{
+				n++;
+				in = n % 2 == 0 ? 0 : 1;
+				i++;
+			}
+			else if ((*cmd)[i] == '\'')
+			{
+				if (in)
+					buf[j++] = '\'';
+				i++;
+			}
+			else
+				buf[j++] = (*cmd)[i++];
+		}
+		ft_strcpy(*cmd, buf);
+		cmd++;
 	}
-	env[i] = NULL;
-	return (env);
-}*/
-
-static char	**get_bin_path(char **env)
-{
-	char **path;
-
-	while (*env && ft_strncmp(*env, "PATH=", 5) != 0)
-		env++;
-	if (!(path = ft_strsplit(*env + 5, ':')))
-		minishell_error(MALLOC, 0, NULL, NULL);
-	return (path);
 }
 
 int			main(int ac, char **av, char **envi)
 {
 	char	*line;
 	char	**env;
-	char	**path;
 	int		ret;
+	char	**cmd;
 
 	(void)ac;
 	(void)av;
 	env = minishell_init(envi);
-	path = get_bin_path(env);
 	while (42)
 	{
 		ft_putstr("$> ");
@@ -62,7 +66,11 @@ int			main(int ac, char **av, char **envi)
 		if (ret != 1)
 			break ;
 		if (line && *line)
-			process_cmd(path, line, &env);
+		{
+			cmd = parse_line(line);
+			parse_quote(cmd);
+			process_cmd(cmd, &env);
+		}
 		if (line)
 			free(line);
 	}

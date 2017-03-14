@@ -6,7 +6,7 @@
 #    By: epillot <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/04 16:40:08 by epillot           #+#    #+#              #
-#    Updated: 2017/03/10 13:26:47 by epillot          ###   ########.fr        #
+#    Updated: 2017/03/14 16:31:18 by epillot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,15 +16,17 @@ FLAG = -Wall -Wextra -Werror
 
 SRC_NAME = main.c\
 		   get_cmd_path.c\
+		   parse_line.c\
 		   process_cmd.c\
 		   check_error_path.c\
 		   minishell_error.c\
 		   manage_env.c\
 		   ft_cd.c\
-		ft_getenv.c\
-		minishell_init.c\
-		ft_setenv.c\
-		ft_unsetenv.c\
+		   ft_getenv.c\
+		   minishell_init.c\
+		   ft_setenv.c\
+		   ft_unsetenv.c\
+		   ft_echo.c\
 
 SRC_PATH = srcs/
 

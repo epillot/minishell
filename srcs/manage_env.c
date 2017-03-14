@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/10 12:52:29 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/10 17:44:08 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/14 16:26:14 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	get_new_env(char *name, char *val, char ***env)
 	size = sizeof(char*) * (i + 1);
 	if (!(new_env = ft_realloc(*env, size, size + sizeof(char*))))
 		minishell_error(MALLOC, 0, NULL, NULL);
-	if (!(new_env[i] = ft_strjoin(name, val)))
+	if (ft_sprintf(new_env + i, "%s=%s", name, val) == -1)
 		minishell_error(MALLOC, 0, NULL, NULL);
 	*env = new_env;
 }
@@ -36,7 +36,7 @@ void		manage_env(char *name, char *newval, char ***env)
 	if ((target = ft_getenv(name, *env)) != NULL)
 	{
 		free(*target);
-		if (!(*target = ft_strjoin(name, newval)))
+		if (ft_sprintf(target, "%s=%s", name, newval) == -1)
 			minishell_error(MALLOC, 0, NULL, NULL);
 	}
 	else
