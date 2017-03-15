@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 12:50:06 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/14 17:06:43 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/15 17:56:53 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int			get_cmd_path(char *cmd, char **env, char **cmd_path)
 	{
 		if (ft_sprintf(cmd_path, "%s/%s", bin_path[i], cmd) == -1)
 			minishell_error(MALLOC, 0, NULL, NULL);
-		ft_putendl(*cmd_path);
 		if ((acc = check_access(*cmd_path, cmd)) == 1)
 		{
 			ft_strtab_free(bin_path);
@@ -75,7 +74,6 @@ int			get_cmd_path(char *cmd, char **env, char **cmd_path)
 		free(*cmd_path);
 	}
 	*cmd_path = NULL;
-	ft_putendl("la");
 	minishell_error(CMDNOTFOUND, 0, NULL, cmd);
 	ft_strtab_free(bin_path);
 	return (0);

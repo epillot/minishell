@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 13:42:11 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/14 16:32:18 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/15 16:57:54 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ enum
 	CD,
 	SETENV,
 	UNSETENV,
-	ECHO
+	ECHO,
+	ENV
 };
 
 enum
@@ -47,7 +48,7 @@ char	**minishell_init(char **envi);
 char	**parse_line(char const *s);
 int		get_cmd_path(char *cmd, char **env, char **cmd_path);
 void	process_cmd(char **cmd, char ***env);
-int		check_error_path(char *path, int builtin, char *builtname);
+int		check_error_path(char *path);
 void	minishell_error(int errnum, int builtin, char *builtname, char *str);
 void	manage_env(char *var, char *newval, char ***env);
 char	**ft_getenv(char *name, char **env);
@@ -55,5 +56,6 @@ void	ft_cd(char *path, char ***env);
 void	ft_setenv(char **arg, char ***env);
 void	ft_unsetenv(char **arg, char **env);
 void	ft_echo(char **param, char **env);
+void	ft_env(char **cmd, char **env);
 
 #endif

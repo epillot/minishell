@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/07 14:59:41 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/14 16:59:02 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/15 18:00:22 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static int	is_builtin(char *cmd)
 		return (UNSETENV);
 	if (ft_strcmp(cmd, "echo") == 0)
 		return (ECHO);
+	if (ft_strcmp(cmd, "env") == 0)
+		return (ENV);
 	return (0);
 }
 
@@ -46,6 +48,8 @@ static void	exec_builtin(int built, char **cmd, char ***env)
 		ft_unsetenv(cmd + 1, *env);
 	else if (built == ECHO)
 		ft_echo(cmd + 1, *env);
+	else if (built == ENV)
+		ft_env(cmd + 1, *env);
 }
 
 static void	run_cmd(char *cmd_path, char **cmd, char ***env)
@@ -57,7 +61,6 @@ static void	run_cmd(char *cmd_path, char **cmd, char ***env)
 	{
 		if (execve(cmd_path, cmd, *env) == -1)
 		{
-			ft_putendl("here");
 			minishell_error(CMDNOTFOUND, 0, NULL, *cmd);
 			exit(EXIT_FAILURE);
 		}
@@ -71,6 +74,7 @@ void		process_cmd(char **cmd, char ***env)
 	char		*cmd_path;
 	struct stat	buf;
 	int			built;
+	int			err;
 
 	if (!*cmd)
 	{
@@ -95,8 +99,8 @@ void		process_cmd(char **cmd, char ***env)
 		}
 		else
 		{
-			//ft_putstr("im here\n");
-			check_error_path(*cmd, 0, NULL);
+			err = check_error_path(*cmd);
+			minishell_error(err, 0, NULL, *cmd);
 		}
 	}
 	else

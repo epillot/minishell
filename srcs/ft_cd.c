@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 12:32:37 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/14 15:42:17 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/15 16:59:20 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void		ft_cd(char *path, char ***env)
 				minishell_error(MY_EACCESS, 1, "cd", cd_path);
 		}
 		else
-			check_error_path(cd_path, 1, "cd");
+			minishell_error(check_error_path(cd_path), 1, "cd", cd_path);
 		free(cd_path);
 	}
 }

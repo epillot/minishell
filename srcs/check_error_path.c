@@ -6,71 +6,63 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/08 13:54:31 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/14 18:55:20 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/15 18:31:23 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	check_path_length(char *path, int builtin, char *builtname)
-{
-	if (ft_strlen(path) >= PATH_MAX)
-	{
-		minishell_error(MY_ENAMETOOLONG, builtin, builtname, path);
-		return (0);
-	}
-	return (1);
-}
-
-static int	check_name_length(int len, char *path, int builtin, char *builtname)
-{
-	if (len == NAME_MAX + 1)
-	{
-		minishell_error(MY_ENAMETOOLONG, builtin, builtname, path);
-		return (0);
-	}
-	return (1);
-}
-
-static int	check_path_access(char *sub_path, char *path,
-		int builtin, char *builtname)
+static int	check_path_access(char *sub_path)
 {
 	if (access(sub_path, F_OK) == 0)
 	{
 		if (access(sub_path, X_OK))
-		{
-			minishell_error(MY_EACCESS, builtin, builtname, path);
-			return (0);
-		}
+			return (-1);
 		return (1);
 	}
-	minishell_error(MY_ENOENT, builtin, builtname, path);
 	return (0);
 }
 
-int			check_error_path(char *path, int builtin, char *builtname)
+static int	is_dir(char *path)
+{
+	struct stat	buf;
+
+	if (!*path)
+		return (1);
+	if (stat(path, &buf) != -1)
+	{
+		if (!S_ISDIR(buf.st_mode))
+			return (0);
+		return (1);
+	}
+	ft_putendl("wesh");
+	return (0);
+}
+
+int			check_error_path(char *path)
 {
 	char	buf[PATH_MAX];
 	int		i;
 	int		j;
-	char	*tmp_path;
+	int		acc;
 
-	tmp_path = path;
-	if (!(check_path_length(path, builtin, builtname)))
-		return (0);
 	ft_bzero(buf, PATH_MAX);
 	i = 0;
-	while (*tmp_path)
+	while (*path)
 	{
 		j = 0;
-		while (*tmp_path && *tmp_path != '/' && ++j <= NAME_MAX)
-			buf[i++] = *tmp_path++;
-		if (*tmp_path == '/')
-			buf[i++] = *tmp_path++;
-		if (!(check_name_length(j, path, builtin, builtname)))
-			return (0);
-		if (!(check_path_access(buf, path, builtin, builtname)))
-			return (0);
+		if (*path == '/')
+		{
+			if (!is_dir(buf))
+				return (MY_ENOTDIR);
+			buf[i++] = *path++;
+		}
+		while (*path && *path != '/' && ++j <= NAME_MAX)
+			buf[i++] = *path++;
+		if (j == NAME_MAX + 1)
+			return (MY_ENAMETOOLONG);
+		if ((acc = check_path_access(buf)) != 1)
+			return (acc == 0 ? MY_ENOENT : MY_EACCESS);
 	}
-	return (1);
+	return (MY_EACCESS);
 }
