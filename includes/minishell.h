@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 13:42:11 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/15 16:57:54 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/16 13:31:45 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,6 @@ void	ft_setenv(char **arg, char ***env);
 void	ft_unsetenv(char **arg, char **env);
 void	ft_echo(char **param, char **env);
 void	ft_env(char **cmd, char **env);
+void	exec_cmd_env(char **cmd, char ***env);
 
 #endif

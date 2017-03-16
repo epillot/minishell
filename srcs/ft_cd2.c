@@ -6,103 +6,89 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 12:32:37 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/10 12:40:56 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/15 16:59:20 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*static int	get_abs_path(char *path, char abs_path[PATH_MAX])
+static char	*get_env_val(char *var, char **env)
 {
-	int		i;
-	int		j;
-	char	**sub_path;
-
-	i = 0;
-	if (*path != '/')
+	char	*output;
+	
+	while (*env && ft_strncmp(*env, var, ft_strlen(var)) != 0)
+		env++;
+	if (!*env)
 	{
-		if (!(getcwd(abs_path, PATH_MAX)))
-		{
-			minishell_error(MY_ENOENT, 1, "cd", path);
-			return (0);
-		}
-		i = ft_strlen(abs_path);
+		minishell_error(ENVNOTSET, 1, "cd", var);
+		return (NULL);
 	}
-	else
-		abs_path[i++] = *path++;
-	if (!(sub_path = ft_strsplit(path, '/')))
-		minishell_error(MALLOC, 1, "cd", NULL);
-	j = 0;
-	while (sub_path[j])
-	{
-		if (!(ft_strcmp(sub_path[j], "..")))
-		{
-			while (abs_path[i] != '/')
-				abs_path[i--] = '\0';
-
-			j++;
-		}
-		else if (!(ft_strcmp(sub_path[j], ".")))
-			j++;
-		else
-		{
-			if (abs_path[i - 1] != '/')
-				abs_path[i++] = '/';
-			if (ft_strlen(sub_path[j]) + ft_strlen(abs_path) >= PATH_MAX)
-			{
-				minishell_error(MY_ENAMETOOLONG, 1, "cd", path);
-				return (0);
-			}
-			ft_strcat(abs_path, sub_path[j]);
-			i += ft_strlen(sub_path[j]);
-			j++;
-		}
-		if (!(check_error_path(abs_path, 1, "cd")))
-			return (0);
-	}
-	return (1);
+	if (!(output = ft_strdup(*env + ft_strlen(var))))
+		minishell_error(MALLOC, 0, NULL, NULL);
+	return (output);
 }
 
-int main(int ac , char **av)
+static char	*get_cd_path(char *path, char **env)
 {
-	char path[PATH_MAX];
+	char	*new_path;
+	char	*home;
 
-	if (ac != 2)
-		return (1);
-	get_abs_path(av[1], path);
-	ft_putendl(path);
-}*/
-
-static void	exec_cd(char *path)
-{
-	char	full_path[PATH_MAX];
-
-	ft_bzero(full_path, PATH_MAX);
-	if (*path != '/')
-		get_full_path(path, full_path);
-
+	if (!path)
+		return (get_env_val("HOME=", env));
+	else if (ft_strcmp(path, "-") == 0)
+	{
+		new_path = get_env_val("OLDPWD=", env);
+		if (new_path)
+			ft_putendl(new_path);
+	}
+	else if (*path == '~')
+	{
+		if (!(home = get_env_val("HOME=", env)))
+			return (NULL);
+		if (!(new_path = ft_strjoin(home, path + 1)))
+			minishell_error(MALLOC, 0, NULL, NULL);
+	}
+	else
+	{
+		if (!(new_path = ft_strdup(path)))
+			minishell_error(MALLOC, 0, NULL, NULL);
+	}
+	return (new_path);
 }
 
 void		ft_cd(char *path, char ***env)
 {
 	struct stat	buf;
-	char		abs_path[PATH_MAX];
+	char		*cwd;
+	char		*cd_path;
 
-	ft_bzero(abs_path, PATH_MAX);
-	if (!(get_absolute_path(path, abs_path)))
+	if (!(cwd = getcwd(NULL, 0)))
 		return ;
-	if (lstat(path, &buf) != -1)
+	if (!(cd_path = get_cd_path(path, *env)))
+		return ;
+	if (chdir(cd_path) == 0)
 	{
-		if (!S_ISDIR(buf.st_mode))
-			minishell_error(MY_ENOTDIR, 1, "cd", path);
-		else
-		{
-			if (access(path, X_OK) == 0)
-				exec_cd(path, env);
-			else
-				minishell_error(MY_EACCESS, 1, "cd", path);
-		}
+		ft_putendl("salut comment ca va");
+		manage_env("OLDPWD=", cwd, env);
+		ft_putendl("bien et toi");
+		free(cwd);
+		cwd = getcwd(NULL, 0);
+		manage_env("PWD=", cwd, env);
+		free(cwd);
+		free(cd_path);
 	}
 	else
-		check_error_path(path, 1, "cd");
+	{
+		free(cwd);
+		if (stat(cd_path, &buf) != -1)
+		{
+			if (!S_ISDIR(buf.st_mode))
+				minishell_error(MY_ENOTDIR, 1, "cd", cd_path);
+			else if (access(cd_path, X_OK))
+				minishell_error(MY_EACCESS, 1, "cd", cd_path);
+		}
+		else
+			minishell_error(check_error_path(cd_path), 1, "cd", cd_path);
+		free(cd_path);
+	}
 }

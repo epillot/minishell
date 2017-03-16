@@ -6,7 +6,7 @@
 #    By: epillot <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/04 16:40:08 by epillot           #+#    #+#              #
-#    Updated: 2017/03/15 12:51:36 by epillot          ###   ########.fr        #
+#    Updated: 2017/03/16 13:31:57 by epillot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRC_NAME = main.c\
 		   ft_unsetenv.c\
 		   ft_echo.c\
 		   ft_env.c\
+		   exec_cmd_env.c\
 
 SRC_PATH = srcs/
 

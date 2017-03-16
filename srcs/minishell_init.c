@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 12:28:36 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/14 15:56:50 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/16 16:26:42 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,34 @@ static char	*read_path(void)
 	return (out);
 }
 
+static void	init_path(char ***env)
+{
+	char	*val;
+
+	if (ft_getenv("PATH", *env) == NULL)
+	{
+		val = read_path();
+		manage_env("PATH", val, env);
+		free(val);
+	}
+}
+
+static void	init_pwd(char ***env)
+{
+	char	*val;
+
+	if ((val = getcwd(NULL, 0)) != NULL)
+	{
+		manage_env("PWD", val, env);
+		free(val);
+	}
+	else
+	{
+		ft_putstr_fd("shell-init: error retrieving current directory: ", 2);
+		ft_putendl_fd("getcwd: cannot access parent directories.", 2);
+	}
+}
+
 char		**minishell_init(char **envi)
 {
 	char	*val;
@@ -48,15 +76,8 @@ char		**minishell_init(char **envi)
 
 	if (!(env = ft_strtab_dup(envi)))
 		minishell_error(MALLOC, 0, NULL, NULL);
-	if (ft_getenv("PATH", env) == NULL)
-	{
-		val = read_path();
-		manage_env("PATH", val, &env);
-		free(val);
-	}
-	val = getcwd(NULL, 0);
-	manage_env("PWD", val, &env);
-	free(val);
+	init_path(&env);
+	init_pwd(&env);
 	tmp = ft_getenv("SHLVL", env);
 	if (tmp)
 	{

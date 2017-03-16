@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/08 13:54:31 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/15 18:31:23 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/16 18:31:22 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static int	is_dir(char *path)
 			return (0);
 		return (1);
 	}
-	ft_putendl("wesh");
 	return (0);
 }
 

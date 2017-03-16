@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/07 14:59:41 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/15 18:00:22 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/16 16:44:00 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,10 @@ void		process_cmd(char **cmd, char ***env)
 	}
 	else
 	{
-		if (get_cmd_path(*cmd, *env, &cmd_path) == 1)
+		if ((err = get_cmd_path(*cmd, *env, &cmd_path)) == -1)
 			run_cmd(cmd_path, cmd, env);
+		else
+			minishell_error(err, 0, NULL, *cmd);
 		if (cmd_path)
 			free(cmd_path);
 	}
