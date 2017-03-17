@@ -6,22 +6,11 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/07 14:59:41 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/16 16:44:00 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/17 14:26:55 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	is_path(char *cmd)
-{
-	while (*cmd)
-	{
-		if (*cmd == '/')
-			return (1);
-		cmd++;
-	}
-	return (0);
-}
 
 static int	is_builtin(char *cmd)
 {
@@ -35,6 +24,8 @@ static int	is_builtin(char *cmd)
 		return (ECHO);
 	if (ft_strcmp(cmd, "env") == 0)
 		return (ENV);
+	if (ft_strcmp(cmd, "exit") == 0)
+		return (EXIT);
 	return (0);
 }
 
@@ -50,6 +41,13 @@ static void	exec_builtin(int built, char **cmd, char ***env)
 		ft_echo(cmd + 1, *env);
 	else if (built == ENV)
 		ft_env(cmd + 1, *env);
+	else if (built == EXIT)
+	{
+		ft_strtab_free(cmd);
+		ft_strtab_free(*env);
+		ft_putendl("exit");
+		exit(EXIT_SUCCESS);
+	}
 }
 
 static void	run_cmd(char *cmd_path, char **cmd, char ***env)
@@ -69,10 +67,33 @@ static void	run_cmd(char *cmd_path, char **cmd, char ***env)
 		wait(NULL);
 }
 
+static void	process_path(char **cmd, char ***env)
+{
+	struct stat	buf;
+	int			err;
+
+	if (stat(*cmd, &buf) != -1)
+	{
+		if (S_ISDIR(buf.st_mode))
+			minishell_error(MY_EISDIR, 0, NULL, *cmd);
+		else
+		{
+			if (access(*cmd, X_OK) == 0)
+				run_cmd(*cmd, cmd, env);
+			else
+				minishell_error(MY_EACCESS, 0, NULL, *cmd);
+		}
+	}
+	else
+	{
+		err = check_error_path(*cmd);
+		minishell_error(err, 0, NULL, *cmd);
+	}
+}
+
 void		process_cmd(char **cmd, char ***env)
 {
 	char		*cmd_path;
-	struct stat	buf;
 	int			built;
 	int			err;
 
@@ -83,26 +104,8 @@ void		process_cmd(char **cmd, char ***env)
 	}
 	if ((built = is_builtin(*cmd)))
 		exec_builtin(built, cmd, env);
-	else if (is_path(*cmd))
-	{
-		if (stat(*cmd, &buf) != -1)
-		{
-			if (S_ISDIR(buf.st_mode))
-				minishell_error(MY_EISDIR, 0, NULL, *cmd);
-			else
-			{
-				if (access(*cmd, X_OK) == 0)
-					run_cmd(*cmd, cmd, env);
-				else
-					minishell_error(MY_EACCESS, 0, NULL, *cmd);
-			}
-		}
-		else
-		{
-			err = check_error_path(*cmd);
-			minishell_error(err, 0, NULL, *cmd);
-		}
-	}
+	else if (ft_strchr(*cmd, '/') != NULL)
+		process_path(cmd, env);
 	else
 	{
 		if ((err = get_cmd_path(*cmd, *env, &cmd_path)) == -1)

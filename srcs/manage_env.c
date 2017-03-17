@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/10 12:52:29 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/14 16:26:14 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/17 12:46:09 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	get_new_env(char *name, char *val, char ***env)
 {
 	char	**new_env;
 	int		i;
-	size_t size;
+	size_t	size;
 
 	i = 0;
 	while ((*env)[i])

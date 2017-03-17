@@ -6,13 +6,13 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 12:50:06 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/16 14:49:35 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/17 12:45:26 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char **get_bin_path(char **env)
+static char	**get_bin_path(char **env)
 {
 	char	**path;
 	int		i;

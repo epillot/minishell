@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/07 10:17:48 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/07 19:04:00 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/17 17:42:56 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ char				*ft_itoa_base(intmax_t n, int base);
 int					ft_max(int a, int b);
 int					nb_size(intmax_t nb);
 void				ft_strtab_free(char **str);
-void *ft_realloc(void *ptr, size_t old, size_t new);
-char **ft_strtab_dup(char **str);
+void				*ft_realloc(void *ptr, size_t old, size_t new);
+char				**ft_strtab_dup(char **str);
 
 #endif

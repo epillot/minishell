@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 12:27:05 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/15 12:46:42 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/17 12:44:42 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ static int	setenv_error(char **arg)
 	}
 	return (1);
 }
-
 
 void		ft_setenv(char **arg, char ***env)
 {

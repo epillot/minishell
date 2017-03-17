@@ -6,21 +6,30 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 12:32:37 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/16 18:31:25 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/17 12:40:34 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*get_env_val(char *val, char **env)
+static char	*get_cd_path2(char *path, char **env)
 {
-	char	**tg;
+	char	*val;
+	char	*new_path;
 
-	tg = ft_getenv(val, env);
-	if (tg && *(*tg + ft_strlen(val) + 1) != '\0')
-		return (*tg + ft_strlen(val) + 1);
-	minishell_error(ENVNOTSET, 1, "cd", val);
-	return (NULL);
+	if (*path == '~')
+	{
+		if (!(val = get_env_val("HOME", env)))
+			return (NULL);
+		if (!(new_path = ft_strjoin(val, path + 1)))
+			minishell_error(MALLOC, 0, NULL, NULL);
+	}
+	else
+	{
+		if (!(new_path = ft_strdup(path)))
+			minishell_error(MALLOC, 0, NULL, NULL);
+	}
+	return (new_path);
 }
 
 static char	*get_cd_path(char *path, char **env, int *put)
@@ -39,23 +48,12 @@ static char	*get_cd_path(char *path, char **env, int *put)
 	{
 		if (!(val = get_env_val("OLDPWD", env)))
 			return (NULL);
-	//	ft_putendl(val);
 		*put = 1;
 		if (!(new_path = ft_strdup(val)))
 			minishell_error(MALLOC, 0, NULL, NULL);
 	}
-	else if (*path == '~')
-	{
-		if (!(val = get_env_val("HOME", env)))
-			return (NULL);
-		if (!(new_path = ft_strjoin(val, path + 1)))
-			minishell_error(MALLOC, 0, NULL, NULL);
-	}
 	else
-	{
-		if (!(new_path = ft_strdup(path)))
-			minishell_error(MALLOC, 0, NULL, NULL);
-	}
+		return (get_cd_path2(path, env));
 	return (new_path);
 }
 
@@ -66,14 +64,25 @@ static void	check_error_cd(char *cd_path, char *cwd)
 	free(cwd);
 	if (stat(cd_path, &buf) != -1)
 	{
-		 if (!S_ISDIR(buf.st_mode))
-			 minishell_error(MY_ENOTDIR, 1, "cd", cd_path);
-		 else if (access(cd_path, X_OK))
-			 minishell_error(MY_EACCESS, 1, "cd", cd_path);
+		if (!S_ISDIR(buf.st_mode))
+			minishell_error(MY_ENOTDIR, 1, "cd", cd_path);
+		else if (access(cd_path, X_OK))
+			minishell_error(MY_EACCESS, 1, "cd", cd_path);
 	}
 	else
 		minishell_error(check_error_path(cd_path), 1, "cd", cd_path);
 	free(cd_path);
+}
+
+static char	*cwd_error(void)
+{
+	char	*cwd;
+
+	ft_putstr_fd("minishell: cd: error retrieving current directory: ", 2);
+	ft_putendl_fd("getcwd: cannot access parent directories.", 2);
+	if (!(cwd = ft_strdup("")))
+		minishell_error(MALLOC, 0, NULL, NULL);
+	return (cwd);
 }
 
 void		ft_cd(char *path, char ***env)
@@ -86,12 +95,7 @@ void		ft_cd(char *path, char ***env)
 	if (!(cd_path = get_cd_path(path, *env, &put)))
 		return ;
 	if (!(cwd = getcwd(NULL, 0)))
-	{
-		ft_putstr_fd("minishell: cd: error retrieving current directory: ", 2);
-		ft_putendl_fd("getcwd: cannot access parent directories.", 2);
-		if (!(cwd = ft_strdup("")))
-			minishell_error(MALLOC, 0, NULL, NULL);
-	}
+		cwd = cwd_error();
 	if (chdir(cd_path) == 0)
 	{
 		if (put)

@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/15 13:25:02 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/16 13:33:36 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/17 17:41:28 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,4 @@ void		exec_cmd_env(char **cmd, char ***env)
 		if (cmd_path)
 			free(cmd_path);
 	}
-
 }

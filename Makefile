@@ -6,7 +6,7 @@
 #    By: epillot <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/04 16:40:08 by epillot           #+#    #+#              #
-#    Updated: 2017/03/16 13:31:57 by epillot          ###   ########.fr        #
+#    Updated: 2017/03/17 12:30:04 by epillot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRC_NAME = main.c\
 		   manage_env.c\
 		   ft_cd.c\
 		   ft_getenv.c\
+		   get_env_val.c\
 		   minishell_init.c\
 		   ft_setenv.c\
 		   ft_unsetenv.c\

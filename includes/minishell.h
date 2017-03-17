@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 13:42:11 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/16 13:31:45 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/17 17:42:22 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "libft.h"
 # include "get_next_line.h"
 # include <signal.h>
-# include <sys/types.h> 
+# include <sys/types.h>
 # include <sys/stat.h>
 # include <limits.h>
 # include <fcntl.h>
@@ -29,7 +29,8 @@ enum
 	SETENV,
 	UNSETENV,
 	ECHO,
-	ENV
+	ENV,
+	EXIT
 };
 
 enum
@@ -52,6 +53,7 @@ int		check_error_path(char *path);
 void	minishell_error(int errnum, int builtin, char *builtname, char *str);
 void	manage_env(char *var, char *newval, char ***env);
 char	**ft_getenv(char *name, char **env);
+char	*get_env_val(char *val, char **env);
 void	ft_cd(char *path, char ***env);
 void	ft_setenv(char **arg, char ***env);
 void	ft_unsetenv(char **arg, char **env);

@@ -6,22 +6,18 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/03 13:41:02 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/15 18:27:06 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/17 17:33:41 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	parse_quote(char **cmd)
+static void	remove_quote(char **cmd)
 {
+	char	buf[PATH_MAX + 1];
 	int		i;
 	int		j;
-	int		in;
-	int		n;
-	char	buf[PATH_MAX + 1];
 
-	in = 0;
-	n = 0;
 	while (*cmd)
 	{
 		i = 0;
@@ -29,18 +25,8 @@ static void	parse_quote(char **cmd)
 		ft_bzero(buf, PATH_MAX + 1);
 		while ((*cmd)[i])
 		{
-			if ((*cmd)[i] == '"')
-			{
-				n++;
-				in = n % 2 == 0 ? 0 : 1;
+			if ((*cmd)[i] == '"' || (*cmd)[i] == '\'')
 				i++;
-			}
-			else if ((*cmd)[i] == '\'')
-			{
-				if (in)
-					buf[j++] = '\'';
-				i++;
-			}
 			else
 				buf[j++] = (*cmd)[i++];
 		}
@@ -49,31 +35,39 @@ static void	parse_quote(char **cmd)
 	}
 }
 
+static void	shell_process(char *line, char ***env)
+{
+	char	**cmd;
+
+	if (line && *line)
+	{
+		cmd = parse_line(line);
+		remove_quote(cmd);
+		process_cmd(cmd, env);
+	}
+	if (line)
+		free(line);
+}
+
 int			main(int ac, char **av, char **envi)
 {
 	char	*line;
 	char	**env;
 	int		ret;
-	char	**cmd;
 
 	(void)ac;
 	(void)av;
 	env = minishell_init(envi);
+	//signal(SIGINT, ft_signal);
 	while (42)
 	{
-		ft_putstr("$> ");
+		ft_printf("\033[33mMinishell \033[32m%C\033[0m ", 0x21e8);
 		ret = get_next_line(0, &line);
 		if (ret != 1)
 			break ;
-		if (line && *line)
-		{
-			cmd = parse_line(line);
-			parse_quote(cmd);
-			process_cmd(cmd, &env);
-		}
-		if (line)
-			free(line);
+		shell_process(line, &env);
 	}
+	ft_strtab_free(env);
 	if (ret == 0)
 	{
 		ft_putendl("exit");

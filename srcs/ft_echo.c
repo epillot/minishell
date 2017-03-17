@@ -6,7 +6,7 @@
 /*   By: epillot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 15:09:24 by epillot           #+#    #+#             */
-/*   Updated: 2017/03/14 18:53:07 by epillot          ###   ########.fr       */
+/*   Updated: 2017/03/17 14:54:50 by epillot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	print_one(char *param, char **env)
 	i = 0;
 	while (*param)
 	{
-		if (*param == '$' && *(param + 1) != '\0')
+		if (*param == '$' && *(param + 1) != '\0' && *(param + 1) != ' ')
 		{
 			param++;
 			tg = ft_getenv(param, env);
