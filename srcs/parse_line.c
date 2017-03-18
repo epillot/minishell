@@ -58,7 +58,7 @@ char		**parse_line(char const *s)
 	i = 0;
 	nb_word = ft_count_word(s);
 	if (!(tab_str = (char **)ft_memalloc(sizeof(char *) * (nb_word + 1))))
-		return (NULL);
+		minishell_error(MALLOC, NULL, NULL);
 	while (i < nb_word)
 	{
 		while (is_shell_space(*s))

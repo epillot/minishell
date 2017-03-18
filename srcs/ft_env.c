@@ -26,7 +26,7 @@ static int	add_in_env(char *param, char ***env)
 		return (0);
 	}
 	if (!(name = ft_strnew(sizeof(char) * i)))
-		minishell_error(MALLOC, 0, NULL, NULL);
+		minishell_error(MALLOC, NULL, NULL);
 	ft_strncpy(name, param, i);
 	manage_env(name, param + i + 1, env);
 	free(name);
@@ -40,13 +40,13 @@ static char	**get_new_env(char ***cmd, char **env)
 	if (**cmd && ft_strcmp(**cmd, "-i") == 0)
 	{
 		if (!(out = ft_memalloc(sizeof(char*))))
-			minishell_error(MALLOC, 0, NULL, NULL);
+			minishell_error(MALLOC, NULL, NULL);
 		(*cmd)++;
 	}
 	else
 	{
 		if (!(out = ft_strtab_dup(env)))
-			minishell_error(MALLOC, 0, NULL, NULL);
+			minishell_error(MALLOC, NULL, NULL);
 	}
 	while (**cmd && ft_strchr(**cmd, '=') != NULL)
 	{

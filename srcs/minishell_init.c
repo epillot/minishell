@@ -27,15 +27,16 @@ static char	*read_path(void)
 		if (out)
 		{
 			tmp = out;
-			ft_sprintf(&out, "%s:%s", tmp, path);
+			if (ft_sprintf(&out, "%s:%s", tmp, path) == -1)
+				minishell_error(MALLOC, NULL, NULL);
 			free(tmp);
 			free(path);
 		}
 		else
 			out = path;
 	}
-	if (ret == -1)
-		minishell_error(MALLOC, 0, NULL, NULL);
+	if (ret == -1 && fd >= 0)
+		minishell_error(MALLOC, NULL, NULL);
 	return (out);
 }
 
@@ -46,8 +47,11 @@ static void	init_path(char ***env)
 	if (ft_getenv("PATH", *env) == NULL)
 	{
 		val = read_path();
-		manage_env("PATH", val, env);
-		free(val);
+		if (val)
+		{
+			manage_env("PATH", val, env);
+			free(val);
+		}
 	}
 }
 
@@ -75,7 +79,7 @@ char		**minishell_init(char **envi)
 	int		lvl;
 
 	if (!(env = ft_strtab_dup(envi)))
-		minishell_error(MALLOC, 0, NULL, NULL);
+		minishell_error(MALLOC, NULL, NULL);
 	init_path(&env);
 	init_pwd(&env);
 	tmp = ft_getenv("SHLVL", env);
@@ -86,9 +90,10 @@ char		**minishell_init(char **envi)
 			val++;
 		lvl = ft_atoi(val + 1);
 		if (!(val = ft_itoa(lvl + 1)))
-			minishell_error(MALLOC, 0, NULL, NULL);
+			minishell_error(MALLOC, NULL, NULL);
 		free(*tmp);
-		*tmp = ft_strjoin("SHLVL=", val);
+		if (!(*tmp = ft_strjoin("SHLVL=", val)))
+			minishell_error(MALLOC, NULL, NULL);
 		free(val);
 	}
 	else

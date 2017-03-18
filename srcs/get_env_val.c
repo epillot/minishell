@@ -19,6 +19,6 @@ char	*get_env_val(char *val, char **env)
 	tg = ft_getenv(val, env);
 	if (tg && *(*tg + ft_strlen(val) + 1) != '\0')
 		return (*tg + ft_strlen(val) + 1);
-	minishell_error(ENVNOTSET, 1, "cd", val);
+	minishell_error(ENVNOTSET, "cd", val);
 	return (NULL);
 }

@@ -23,7 +23,7 @@ static void	run_cmd_env(char *cmd_path, char **cmd, char ***env)
 		if (execve(cmd_path, cmd, *env) == -1)
 		{
 			err = check_error_path(cmd_path);
-			minishell_error(err, 1, "env", *cmd);
+			minishell_error(err, "env", *cmd);
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -46,7 +46,7 @@ void		exec_cmd_env(char **cmd, char ***env)
 		{
 			if (err == CMDNOTFOUND)
 				err = MY_ENOENT;
-			minishell_error(err, 1, "env", *cmd);
+			minishell_error(err, "env", *cmd);
 		}
 		if (cmd_path)
 			free(cmd_path);

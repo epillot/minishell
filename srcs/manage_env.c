@@ -23,9 +23,9 @@ static void	get_new_env(char *name, char *val, char ***env)
 		i++;
 	size = sizeof(char*) * (i + 1);
 	if (!(new_env = ft_realloc(*env, size, size + sizeof(char*))))
-		minishell_error(MALLOC, 0, NULL, NULL);
+		minishell_error(MALLOC, NULL, NULL);
 	if (ft_sprintf(new_env + i, "%s=%s", name, val) == -1)
-		minishell_error(MALLOC, 0, NULL, NULL);
+		minishell_error(MALLOC, NULL, NULL);
 	*env = new_env;
 }
 
@@ -37,7 +37,7 @@ void		manage_env(char *name, char *newval, char ***env)
 	{
 		free(*target);
 		if (ft_sprintf(target, "%s=%s", name, newval) == -1)
-			minishell_error(MALLOC, 0, NULL, NULL);
+			minishell_error(MALLOC, NULL, NULL);
 	}
 	else
 		get_new_env(name, newval, env);

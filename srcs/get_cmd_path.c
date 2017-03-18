@@ -24,12 +24,12 @@ static char	**get_bin_path(char **env)
 		while ((*path)[i] != '=')
 			i++;
 		if (!(path = ft_strsplit(*path + i + 1, ':')))
-			minishell_error(MALLOC, 0, NULL, NULL);
+			minishell_error(MALLOC, NULL, NULL);
 	}
 	else
 	{
 		if (!(path = ft_strsplit("", ':')))
-			minishell_error(MALLOC, 0, NULL, NULL);
+			minishell_error(MALLOC, NULL, NULL);
 	}
 	return (path);
 }
@@ -56,7 +56,7 @@ int			get_cmd_path(char *cmd, char **env, char **cmd_path)
 	while (bin_path[++i])
 	{
 		if (ft_sprintf(cmd_path, "%s/%s", bin_path[i], cmd) == -1)
-			minishell_error(MALLOC, 0, NULL, NULL);
+			minishell_error(MALLOC, NULL, NULL);
 		if ((acc = check_access(*cmd_path)) == 1)
 		{
 			ft_strtab_free(bin_path);

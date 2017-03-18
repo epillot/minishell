@@ -50,7 +50,7 @@ char	**parse_line(char const *s);
 int		get_cmd_path(char *cmd, char **env, char **cmd_path);
 void	process_cmd(char **cmd, char ***env);
 int		check_error_path(char *path);
-void	minishell_error(int errnum, int builtin, char *builtname, char *str);
+void	minishell_error(int errnum, char *builtin, char *str);
 void	manage_env(char *var, char *newval, char ***env);
 char	**ft_getenv(char *name, char **env);
 char	*get_env_val(char *val, char **env);

@@ -18,7 +18,7 @@ char	**ft_getenv(char *name, char **env)
 	char	*tmp;
 
 	if (!(tmp = ft_strjoin(name, "=")))
-		minishell_error(MALLOC, 0, NULL, NULL);
+		minishell_error(MALLOC, NULL, NULL);
 	len = ft_strlen(tmp);
 	while (*env)
 	{

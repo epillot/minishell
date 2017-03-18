@@ -22,12 +22,12 @@ static char	*get_cd_path2(char *path, char **env)
 		if (!(val = get_env_val("HOME", env)))
 			return (NULL);
 		if (!(new_path = ft_strjoin(val, path + 1)))
-			minishell_error(MALLOC, 0, NULL, NULL);
+			minishell_error(MALLOC, NULL, NULL);
 	}
 	else
 	{
 		if (!(new_path = ft_strdup(path)))
-			minishell_error(MALLOC, 0, NULL, NULL);
+			minishell_error(MALLOC, NULL, NULL);
 	}
 	return (new_path);
 }
@@ -42,7 +42,7 @@ static char	*get_cd_path(char *path, char **env, int *put)
 		if (!(val = get_env_val("HOME", env)))
 			return (NULL);
 		if (!(new_path = ft_strdup(val)))
-			minishell_error(MALLOC, 0, NULL, NULL);
+			minishell_error(MALLOC, NULL, NULL);
 	}
 	else if (ft_strcmp(path, "-") == 0)
 	{
@@ -50,7 +50,7 @@ static char	*get_cd_path(char *path, char **env, int *put)
 			return (NULL);
 		*put = 1;
 		if (!(new_path = ft_strdup(val)))
-			minishell_error(MALLOC, 0, NULL, NULL);
+			minishell_error(MALLOC, NULL, NULL);
 	}
 	else
 		return (get_cd_path2(path, env));
@@ -65,12 +65,12 @@ static void	check_error_cd(char *cd_path, char *cwd)
 	if (stat(cd_path, &buf) != -1)
 	{
 		if (!S_ISDIR(buf.st_mode))
-			minishell_error(MY_ENOTDIR, 1, "cd", cd_path);
+			minishell_error(MY_ENOTDIR, "cd", cd_path);
 		else if (access(cd_path, X_OK))
-			minishell_error(MY_EACCESS, 1, "cd", cd_path);
+			minishell_error(MY_EACCESS, "cd", cd_path);
 	}
 	else
-		minishell_error(check_error_path(cd_path), 1, "cd", cd_path);
+		minishell_error(check_error_path(cd_path), "cd", cd_path);
 	free(cd_path);
 }
 
@@ -81,7 +81,7 @@ static char	*cwd_error(void)
 	ft_putstr_fd("minishell: cd: error retrieving current directory: ", 2);
 	ft_putendl_fd("getcwd: cannot access parent directories.", 2);
 	if (!(cwd = ft_strdup("")))
-		minishell_error(MALLOC, 0, NULL, NULL);
+		minishell_error(MALLOC, NULL, NULL);
 	return (cwd);
 }
 
@@ -103,7 +103,7 @@ void		ft_cd(char *path, char ***env)
 		manage_env("OLDPWD", cwd, env);
 		free(cwd);
 		if (!(cwd = getcwd(NULL, 0)))
-			minishell_error(MALLOC, 0, NULL, NULL);
+			minishell_error(MALLOC, NULL, NULL);
 		manage_env("PWD", cwd, env);
 		free(cwd);
 		free(cd_path);

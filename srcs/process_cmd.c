@@ -59,7 +59,7 @@ static void	run_cmd(char *cmd_path, char **cmd, char ***env)
 	{
 		if (execve(cmd_path, cmd, *env) == -1)
 		{
-			minishell_error(CMDNOTFOUND, 0, NULL, *cmd);
+			minishell_error(CMDNOTFOUND, NULL, *cmd);
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -75,19 +75,19 @@ static void	process_path(char **cmd, char ***env)
 	if (stat(*cmd, &buf) != -1)
 	{
 		if (S_ISDIR(buf.st_mode))
-			minishell_error(MY_EISDIR, 0, NULL, *cmd);
+			minishell_error(MY_EISDIR, NULL, *cmd);
 		else
 		{
 			if (access(*cmd, X_OK) == 0)
 				run_cmd(*cmd, cmd, env);
 			else
-				minishell_error(MY_EACCESS, 0, NULL, *cmd);
+				minishell_error(MY_EACCESS, NULL, *cmd);
 		}
 	}
 	else
 	{
 		err = check_error_path(*cmd);
-		minishell_error(err, 0, NULL, *cmd);
+		minishell_error(err, NULL, *cmd);
 	}
 }
 
@@ -111,7 +111,7 @@ void		process_cmd(char **cmd, char ***env)
 		if ((err = get_cmd_path(*cmd, *env, &cmd_path)) == -1)
 			run_cmd(cmd_path, cmd, env);
 		else
-			minishell_error(err, 0, NULL, *cmd);
+			minishell_error(err, NULL, *cmd);
 		if (cmd_path)
 			free(cmd_path);
 	}

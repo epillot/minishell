@@ -35,15 +35,15 @@ static void	print_error(int errnum)
 	}
 }
 
-void		minishell_error(int errnum, int builtin, char *builtname, char *str)
+void		minishell_error(int errnum, char *builtin, char *str)
 {
 	ft_putstr_fd("minishell: ", 2);
 	if (builtin)
 	{
-		ft_putstr_fd(builtname, 2);
+		ft_putstr_fd(builtin, 2);
 		ft_putstr_fd(": ", 2);
 	}
-	if (errnum != MALLOC)
+	if (str)
 	{
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd(": ", 2);
