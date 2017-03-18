@@ -12,16 +12,14 @@
 
 #include "minishell.h"
 
-static char	*read_path(void)
+static char	*read_path(int fd)
 {
-	int		fd;
 	char	*path;
 	char	*tmp;
 	int		ret;
 	char	*out;
 
 	out = NULL;
-	fd = open("/etc/paths", O_RDONLY);
 	while ((ret = get_next_line(fd, &path)) == 1)
 	{
 		if (out)
@@ -35,7 +33,7 @@ static char	*read_path(void)
 		else
 			out = path;
 	}
-	if (ret == -1 && fd >= 0)
+	if (ret == -1)
 		minishell_error(MALLOC, NULL, NULL);
 	return (out);
 }
@@ -43,14 +41,19 @@ static char	*read_path(void)
 static void	init_path(char ***env)
 {
 	char	*val;
+	int fd;
 
 	if (ft_getenv("PATH", *env) == NULL)
 	{
-		val = read_path();
-		if (val)
+		fd = open("/etc/paths", O_RDONLY);
+		if (fd >= 0)
 		{
-			manage_env("PATH", val, env);
-			free(val);
+			val = read_path(fd);
+			if (val)
+			{
+				manage_env("PATH", val, env);
+				free(val);
+			}
 		}
 	}
 }
