@@ -21,6 +21,9 @@
 # include <sys/stat.h>
 # include <limits.h>
 # include <fcntl.h>
+# include <term.h>
+# include <termios.h>
+# include <dirent.h>
 
 enum
 {
@@ -28,9 +31,10 @@ enum
 	CD,
 	SETENV,
 	UNSETENV,
-	ECHO,
+	MYECHO,
 	ENV,
-	EXIT
+	EXIT,
+	PWD
 };
 
 enum
@@ -60,5 +64,7 @@ void	ft_unsetenv(char **arg, char **env);
 void	ft_echo(char **param, char **env);
 void	ft_env(char **cmd, char **env);
 void	exec_cmd_env(char **cmd, char ***env);
+int     ft_getcwd(char **pwd);
+void ft_pwd(void);
 
 #endif

@@ -21,11 +21,13 @@ static int	is_builtin(char *cmd)
 	if (ft_strcmp(cmd, "unsetenv") == 0)
 		return (UNSETENV);
 	if (ft_strcmp(cmd, "echo") == 0)
-		return (ECHO);
+		return (MYECHO);
 	if (ft_strcmp(cmd, "env") == 0)
 		return (ENV);
 	if (ft_strcmp(cmd, "exit") == 0)
 		return (EXIT);
+	if (ft_strcmp(cmd, "pwd") == 0)
+		return (PWD);
 	return (0);
 }
 
@@ -37,10 +39,12 @@ static void	exec_builtin(int built, char **cmd, char ***env)
 		ft_setenv(cmd + 1, env);
 	else if (built == UNSETENV)
 		ft_unsetenv(cmd + 1, *env);
-	else if (built == ECHO)
+	else if (built == MYECHO)
 		ft_echo(cmd + 1, *env);
 	else if (built == ENV)
 		ft_env(cmd + 1, *env);
+	else if (built == PWD)
+		ft_pwd();
 	else if (built == EXIT)
 	{
 		ft_strtab_free(cmd);

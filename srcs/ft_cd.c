@@ -67,7 +67,10 @@ static void	check_error_cd(char *cd_path, char *cwd)
 		if (!S_ISDIR(buf.st_mode))
 			minishell_error(MY_ENOTDIR, "cd", cd_path);
 		else if (access(cd_path, X_OK))
+		{
 			minishell_error(MY_EACCESS, "cd", cd_path);
+			ft_putendl("ploup");
+		}
 	}
 	else
 		minishell_error(check_error_path(cd_path), "cd", cd_path);
@@ -103,7 +106,7 @@ void		ft_cd(char *path, char ***env)
 		manage_env("OLDPWD", cwd, env);
 		free(cwd);
 		if (!(cwd = getcwd(NULL, 0)))
-			minishell_error(MALLOC, NULL, NULL);
+			cwd = cwd_error();
 		manage_env("PWD", cwd, env);
 		free(cwd);
 		free(cd_path);

@@ -30,6 +30,8 @@ SRC_NAME = main.c\
 		   ft_echo.c\
 		   ft_env.c\
 		   exec_cmd_env.c\
+		ft_getcwd.c\
+		ft_pwd.c\
 
 SRC_PATH = srcs/
 
@@ -46,7 +48,7 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	@make -C libft/
 	@echo "\033[35mmaking $(NAME)...\033[0m"
-	@gcc $(FLAG) -o $(NAME) $(OBJ) $(INC) -Llibft -lft
+	@gcc $(FLAG) -o $(NAME) $(OBJ) $(INC) -lncurses -Llibft -lft
 	@echo "\033[32mdone\033[0m"
 	
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c

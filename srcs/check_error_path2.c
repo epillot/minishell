@@ -39,35 +39,15 @@ static int	is_dir(char *path)
 	return (0);
 }
 
-static int	check_starting_dir(char *path)
-{
-	DIR *cur;
-	if (*path != '/')
-	{
-		if ((cur = opendir(".")) == NULL)
-			return (MY_EACCESS);
-		else if (readdir(cur) == NULL)
-		{
-			closedir(cur);
-			return (MY_ENOENT);
-		}
-		closedir(cur);
-	}
-	return (-1);
-}
-
 int			check_error_path(char *path)
 {
 	char	buf[PATH_MAX];
 	int		i;
 	int		j;
 	int		acc;
-	int err;
 
 	ft_bzero(buf, PATH_MAX);
 	i = 0;
-	if ((err = check_starting_dir(path)) != -1)
-		return (err);
 	while (*path)
 	{
 		j = 0;

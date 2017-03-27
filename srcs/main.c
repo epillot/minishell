@@ -49,16 +49,29 @@ static void	shell_process(char *line, char ***env)
 		free(line);
 }
 
+/*int	get_term(struct termios *term)
+{
+	if (tgetent(NULL, "xterm-256color") != 1)
+		return (0);
+	if (tcgetattr(0, term) == -1)
+		return (0);
+	return (1);
+	
+}*/
+
 int			main(int ac, char **av, char **envi)
 {
 	char	*line;
 	char	**env;
 	int		ret;
+	//struct termios term;
 
 	(void)ac;
 	(void)av;
 	env = minishell_init(envi);
 	//signal(SIGINT, ft_signal);
+	/*if (get_term(&term) == 0)
+		ft_putendl("pas cool");*/
 	while (42)
 	{
 		ft_printf("\033[33mMinishell \033[32m%C\033[0m ", 0x21e8);
